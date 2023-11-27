@@ -1,0 +1,27 @@
+digraph g {
+
+	s0 [shape="circle" label="0"];
+	s1 [shape="circle" label="1"];
+	s2 [shape="circle" label="2"];
+	s3 [shape="circle" label="3"];
+	s0 -> s3 [label="water[] / *"];
+	s0 -> s1 [label="pod[] / *"];
+	s0 -> s0 [label="button[] / Error"];
+	s0 -> s0 [label="clean[] / *"];
+	s1 -> s2 [label="water[] / *"];
+	s1 -> s1 [label="pod[] / *"];
+	s1 -> s1 [label="button[] / Error"];
+	s1 -> s0 [label="clean[] / *"];
+	s2 -> s2 [label="water[] / *"];
+	s2 -> s2 [label="pod[] / *"];
+	s2 -> s2 [label="button[] / OK"];
+	s2 -> s0 [label="clean[] / *"];
+	s3 -> s3 [label="water[] / *"];
+	s3 -> s2 [label="pod[] / *"];
+	s3 -> s3 [label="button[] / Error"];
+	s3 -> s0 [label="clean[] / *"];
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> s0;
+
+}
