@@ -1,0 +1,185 @@
+package component;
+
+/**
+ * 咖啡机类，用于模拟咖啡机的真实运行。
+ *
+ * 基本属性：
+ * - powerOn：是否开机
+ * - coffeeBeanGrindLevel：咖啡豆研磨设置，取值范围：0-11
+ * （0表示最粗磨，11表示最细磨，研磨消耗时间假定为 2n+10 s, 其中n表示研磨程度）
+ * - drinkVolume：饮料量设置，取值范围：0-2（0表示低 160 ml ，1表示中 200 ml，2表示高 240 ml）
+ * - aromaIntensity：香味浓度，取值范围：0-2（0表示最温和，2表示最浓郁）
+ * - temperature：饮料温度，取值范围：0-2（0表示正常，2表示最大）
+ *
+ *
+ * 全局属性：
+ * - waterVolume：水量，取值范围：0-1800，单位ml (0表示无水，1800表示满水)
+ * - coffeeBeanVolume：咖啡机的咖啡豆总量，取值范围：0-275，单位 g (0表示无咖啡豆，275表示满咖啡豆)
+ * - milkVolume：奶量，取值范围：0-400，单位 ml (0表示无奶，400表示满奶)
+ * - cupVolume：杯子容量，取值范围：0-250 (0表示无杯子，250表示满杯子)
+ *
+ * 功能：
+ * - setPowerOn(boolean powerOn)：设置是否开机，true表示开机，false表示关机
+ * - addWater(int volume)：加水，volume表示加水量，取值范围：0-1800，单位：ml，返回值表示实际加水量，
+ * 如果加水量超过最大值，则返回最大值
+ * - addCoffeeBean(int volume)：加咖啡豆，volume表示加咖啡豆量，取值范围：0-275，单位：g，返回值表示实际加咖啡豆量
+ * - addMilk(int volume)：加奶，volume表示加奶量，取值范围：0-400，单位：ml，返回值表示实际加奶量
+ * - addCup(int volume)：加杯子，volume表示加杯子量，取值范围：0-2，单位：个，0表示不加杯子，1表示加一个杯子，2表示加两个杯子
+ * - setCoffeeType(int type)：设置咖啡类型，type表示咖啡类型，取值范围：1-3，1表示美式咖啡，2表示拿铁，3表示卡布奇诺
+ * - brewCoffee()：开始冲泡咖啡，返回值表示冲泡是否成功，如果冲泡成功，则返回true，否则返回false,
+ * 需要判断是否有足够的水、咖啡豆、奶和杯子 以及电源是否处于开启状态，根据不同的咖啡类型，消耗不同的水、咖啡豆、奶和杯子
+ * - setCoffeeBeanGrindLevel(int level)：设置咖啡豆研磨程度，level表示咖啡豆研磨程度，取值范围：0-11, 消耗时间假定为 2n+10 s, 其中n表示研磨程度
+ * - setDrinkVolume(int volume)：设置饮料量，volume表示饮料量，取值范围：0-2，0表示低 160 ml ，1表示中 200 ml，2表示高 240 ml
+ * - setAromaIntensity(int intensity)：设置香味浓度，intensity表示香味浓度，取值范围：0-2，0表示最温和，2表示最浓郁
+ * - setTemperature(int temperature)：设置饮料温度，temperature表示饮料温度，取值范围：0-2，0表示正常，2表示最大
+ */
+
+public class CoffeeMachine_bak {
+    // 系统状态属性
+    private boolean waterReady;
+    private boolean beanReady;
+    private boolean milkReady;
+    private boolean cupReady;
+    private boolean thisTimeCoffeeReady;
+    private boolean isWorking;
+    private boolean isPowerOn;
+
+    // 属性标准设定值
+    private static final int MAX_WATER_VOLUME = 1800;
+    private static final int MAX_COFFEE_BEAN_VOLUME = 250;
+    private static final int MAX_MILK_VOLUME = 400;
+
+    // 系统具体属性
+    private int coffeeBeanGrindLevel = 5;   // 0-11
+    private int drinkVolume = 1;            // 0-2, 0: 160ml, 1: 200ml, 2: 240ml
+    private int aromaIntensity = 1;         // 0-2, 0: mild, 1: normal, 2: strong
+    private int temperature = 1;            // 0-2, 0: normal, 1: hot, 2: very hot
+
+    private int waterVolume;            // Current water volume, 0-18000ml
+    private int coffeeBeanVolume;       // Current coffee bean volume, 0-275g
+    private int milkVolume;             // Current milk volume, 0-250ml
+    private int cupVolume;              // Current cup volume, 0-250ml
+    private int coffeeType;             // 1: Americano, 2: Latte, 3: Cappuccino
+    // 1: Americano (1豆:15水)
+    // 2: Latte (1豆:1水:3奶)
+    // 3: Cappuccino (1豆:2奶:1泡沫牛奶)
+
+    // waterReady, cupReady, coffeeBeanReady, milkReady, powerOn
+
+    private String machineStatus;       // Current machine status, e.g. "Ready", "Making coffee"
+
+    public void setPowerOn(boolean powerOn) {
+        this.powerOn = powerOn;
+    }
+
+    public void addWater(int volume) {
+        waterVolume = Math.min(waterVolume + volume, MAX_WATER_VOLUME);
+    }
+
+    public void addCoffeeBean(int volume) {
+        coffeeBeanVolume = Math.min(coffeeBeanVolume + volume, MAX_COFFEE_BEAN_VOLUME);
+    }
+
+    public void addMilk(int volume) {
+        milkVolume = Math.min(milkVolume + volume, MAX_MILK_VOLUME);
+    }
+
+    public void addCup(int volume) {
+        cupVolume = Math.min(cupVolume + volume, MAX_CUP_VOLUME);
+    }
+
+    public void setCoffeeType(int type) {
+        coffeeType = type;
+    }
+
+    public void setCoffeeBeanGrindLevel(int level) {
+        coffeeBeanGrindLevel = level;
+        wait(2 * level + 10);
+    }
+
+    public void setAromaIntensity(int intensity) {
+        aromaIntensity = intensity;
+    }
+
+    public void setTemperature(int temperature) {
+        this.temperature = temperature;
+    }
+
+    public void setDrinkVolume(int volume) {
+        drinkVolume = volume;
+    }
+
+    private void wait(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String brewCoffee() {
+        if (!powerOn) {
+            machineStatus = "Power off";
+            return machineStatus;
+        }
+        int[] needed = calculateNeeded();
+        int waterNeeded = needed[0];
+        int coffeeBeanNeeded = needed[1];
+        int milkNeeded = needed[2];
+        if (waterVolume < waterNeeded) {
+            machineStatus = "Water not enough";
+            return machineStatus;
+        }
+        if (coffeeBeanVolume < coffeeBeanNeeded) {
+            machineStatus = "Coffee bean not enough";
+            return machineStatus;
+        }
+        if (milkVolume < milkNeeded) {
+            machineStatus = "Milk not enough";
+            return machineStatus;
+        }
+        machineStatus = "Making coffee";
+        wait(10);
+        return "Coffee is ready";
+    }
+
+    private int[] calculateNeeded() {
+        int[] needed = new int[3];
+        int fullCupVolume = 0;
+        switch (drinkVolume) {
+            case 0:
+                fullCupVolume = 160;
+                break;
+            case 1:
+                fullCupVolume = 200;
+                break;
+            case 2:
+                fullCupVolume = 240;
+                break;
+        }
+        switch (coffeeType) {
+            case 1:
+                needed[0] = fullCupVolume / (15+1);
+                needed[1] = fullCupVolume - needed[0];
+                needed[2] = 0;
+                break;
+            case 2:
+                needed[0] = fullCupVolume / (1+3+1);
+                needed[1] = needed[0];
+                needed[2] = fullCupVolume - needed[0] * 2;
+                break;
+            case 3:
+                needed[0] = fullCupVolume / (2+1+1);
+                needed[1] = 2 * needed[0];
+                needed[2] = fullCupVolume - needed[0] * 3;
+                break;
+        }
+        return needed;
+    }
+
+
+    public static void main(String[] args) {
+        CoffeeMachine_bak coffeeMachineBak = new CoffeeMachine_bak();
+
+    }
+}

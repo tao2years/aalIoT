@@ -1,0 +1,17 @@
+digraph g {
+
+	s0 [shape="circle" label="0"];
+	s1 [shape="circle" label="1"];
+	s0 -> s0 [label="on[] / on"];
+	s0 -> s0 [label="off[] / off"];
+	s0 -> s0 [label="brightness[] / Unknown"];
+	s0 -> s1 [label="brightness[] / ERR_IllegalArgumentException"];
+	s1 -> s1 [label="on[] / unobserved"];
+	s1 -> s1 [label="off[] / unobserved"];
+	s1 -> s1 [label="brightness[] / unobserved"];
+	s1 -> s1 [label="brightness[] / unobserved"];
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> s0;
+
+}

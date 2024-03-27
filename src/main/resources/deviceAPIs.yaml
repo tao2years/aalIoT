@@ -1,0 +1,28 @@
+# int, double, boolean, string
+# range: min, max
+# enum: values
+#
+deviceAPIs:
+  - name: api1
+    parameters:
+      - name: param1
+        type: int
+        range:
+          min: 0
+          max: 100
+      - name: param2
+        type: string
+
+  - name: api2
+    parameters:
+      - name: param1
+        type: enum
+        values:
+          - option1
+          - option2
+          - option3
+      - name: param2
+        type: double
+        range:
+          min: 0.0
+          max: 1.0
