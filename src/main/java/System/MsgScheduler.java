@@ -161,6 +161,8 @@ public class MsgScheduler {
     }
 
 
+
+
     /**
      * 根据当前状态获取可能执行的API
      * @param state
@@ -191,10 +193,31 @@ public class MsgScheduler {
      *
      * @return
      */
-    public static String CompareStateDifference (){
+    public static String CompareStateDifference (Object targetDevice, String currentDigitalState){
+        String physicalState = pollingDeviceState(targetDevice);
+        if (physicalState.equals(currentDigitalState)) {
+            // 一致 放行
+        }
 
+        // 判定几跳和操作记录
+        // 1. 从当前状态到目标状态的路径
         return null;
     }
+
+
+
+    public static String pollingDeviceState(Object device){
+        if (device instanceof CoffeeMachine_V1) {
+            return ((CoffeeMachine_V1) device).toSystemStateString();
+        }
+        return "Unknown device.";
+    }
+
+    /**
+     * 从文件中加载图
+     * @param fileName
+     * @return
+     */
 
     public static Graph<Object, Object> loadGraphFromFile(String fileName){
         Graph<Object, Object> graph = new Graph<>(true,true,false);

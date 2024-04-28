@@ -155,6 +155,7 @@ public class BehaviorModelConstructor {
 
     public static void main(String[] args) {
 
+        long startTime = System.nanoTime(); // 获取开始时间
         Graph<Object, Object> userGraph = new Graph<>(true,true,false);
 
         Set<Edge> edges = new HashSet<>();
@@ -177,6 +178,7 @@ public class BehaviorModelConstructor {
             edges.addAll(_temp);
         }
 
+        int iteration = 0;
         for (int i = 101; i < 9999; i++) {
             LOGGER.info("Iteration: " + i);
             Set<Edge> _temp = new HashSet<>();
@@ -240,6 +242,7 @@ public class BehaviorModelConstructor {
             if (checkSizeConsistency(sizeHistory)) {
                 break;
             }
+            iteration = i+1;
         }
 
 
@@ -292,21 +295,30 @@ public class BehaviorModelConstructor {
             System.out.println();
         }
 
-        for (Edge edge : dotSet){
-            LOGGER.info(edge);
-        }
+        long endTime = System.nanoTime(); // 获取结束时间
+        long elapsedTime = endTime - startTime; // 计算运行时间（纳秒）
 
-        LOGGER.info(dotSet.size());
+        double seconds = (double) elapsedTime / 1000000000.0; // 转换为秒
+
+        LOGGER.info("Program ran for " + seconds + " seconds.");
+//        System.out.println("Program ran for " + seconds + " seconds.");
+
+//        for (Edge edge : dotSet){
+//            LOGGER.info(edge);
+//        }
+
+        LOGGER.info("Node number: " + nodeMap.size()+", Edge number: "+dotSet.size()+", Iteration: "+iteration);
+//        LOGGER.info(dotSet.size());
 
         String dotFile = "src/main/java/component/output.dot";
         generateDotFile(dotSet, nodeMap.size(), dotFile);
 
         LOGGER.info("=========== Graph Show ==============");
         Collection<graph.Edge> edge = userGraph.getEdges();
-        edge.forEach(temp->{
-            LOGGER.info(temp);
-        });
-        LOGGER.info(edge.size());
+//        edge.forEach(temp->{
+//            LOGGER.info(temp);
+//        });
+//        LOGGER.info(edge.size());
         // save userGraph to file
         String fileName = "src/main/java/System/DeviceModel/coffeeMachine.json";
         saveEdgesToFile(edge, fileName);
