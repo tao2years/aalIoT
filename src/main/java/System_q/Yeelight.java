@@ -29,6 +29,12 @@ public class Yeelight {
         this.rgb = new int[] {r, g, b};
     }
 
+    public Yeelight(int brightness, boolean isOn, int r, int g, int b) {
+        this.brightness = brightness;
+        this.powerOn = isOn;
+        this.rgb = new int[] {r, g, b};
+    }
+
 
 
     public String turnOn() {
@@ -50,6 +56,9 @@ public class Yeelight {
     }
 
     public String setBrightness(int brightness) {
+//        if (brightness >= 0 && brightness <= 100) {
+//        if (!powerOn)
+//            return "success";
         if (powerOn && brightness >= 0 && brightness <= 100) {
             this.brightness = brightness;
             return "success";
@@ -59,6 +68,9 @@ public class Yeelight {
     }
 
     public String setRGB(int r, int g, int b) {
+//        if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
+//        if (!powerOn)
+//            return "success";
         if (powerOn && r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
             this.rgb = new int[] {r, g, b};
             return "success";
@@ -68,6 +80,9 @@ public class Yeelight {
     }
 
     public String setColorMode(int colorMode) {
+//        if (colorMode >= 1 && colorMode <= 3) {
+//        if (!powerOn)
+//            return "success";
         if (powerOn && colorMode >= 1 && colorMode <= 3) {
             this.colorMode = colorMode;
             return "success";
@@ -84,7 +99,7 @@ public class Yeelight {
         return "Yeelight{" +
                 "'powerOn':" + powerOn +
                 ", 'brightness':" +  brightnessInRange +
-                ", 'colorMode':" + colorModeInRange +
+//                ", 'colorMode':" + colorModeInRange +
                 ", 'rgb':" + rgbInRange +
                 "}";
     }
@@ -94,7 +109,7 @@ public class Yeelight {
         String rgbString = rgb[0]+","+rgb[1]+","+rgb[2];
         return "Yeelight{" +
                 "'brightness':" + brightness +
-                ", 'colorMode':" + colorMode +
+//                ", 'colorMode':" + colorMode +
                 ", 'powerOn':" + powerOn +
                 ", 'rgb':'" + rgbString +
                 "'}";
@@ -104,7 +119,7 @@ public class Yeelight {
 //        LOGGER.info("Yeelight fromString: " + state);
         JSONObject json = JSON.parseObject(state.replace("Yeelight", ""));
         String rbg[] = json.getString("rgb").trim().split(",");
-        return new Yeelight(json.getInteger("brightness"), json.getInteger("colorMode"), json.getBoolean("powerOn"), Integer.parseInt(rbg[0]), Integer.parseInt(rbg[1]), Integer.parseInt(rbg[2]));
+        return new Yeelight(json.getInteger("brightness"), json.getBoolean("powerOn"), Integer.parseInt(rbg[0]), Integer.parseInt(rbg[1]), Integer.parseInt(rbg[2]));
     }
 
     public static void main(String[] args) {

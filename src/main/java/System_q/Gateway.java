@@ -13,7 +13,7 @@ public class Gateway {
     private int deviceList;
 
     public String addDevice(String device) {
-        if (deviceList < 10) {
+        if (deviceList < 3) {
             deviceList++;
             return "success";
         } else {

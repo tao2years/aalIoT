@@ -73,37 +73,53 @@ public class Subscriber {
         switch (message) {
             case "init":
             case "clean":
+                try{
                 CM.clean();
                 client.publish(RESULTTOPIC, CM.getStatus().toJSONString().getBytes(), QOS, false);
                 // Construct Single Operation Trace
                 singleOp.setAll(ts, message, deviceTwin.toJSONString());
                 client.publish(TRACETTOPIC, singleOp.toString().getBytes(), QOS, false);
                 properties.put("waterReady", false);
-                properties.put("podReady", false);
+                properties.put("podReady", false);}
+                catch (Exception e){
+                    LOGGER.error(e.getMessage());
+                }
                 break;
             case "water":
-                CM.water();
+                try {
+                    CM.water();
 //                LOGGER.info(CM.getStatus()); // {"podReady":false,"waterReady":true}
-                client.publish(RESULTTOPIC, CM.getStatus().toJSONString().getBytes(), QOS, false);
-                // Construct Single Operation Trace
-                singleOp.setAll(ts, message, deviceTwin.toJSONString());
-                client.publish(TRACETTOPIC, singleOp.toString().getBytes(), QOS, false);
-                properties.put("waterReady", true);
+                    client.publish(RESULTTOPIC, CM.getStatus().toJSONString().getBytes(), QOS, false);
+                    // Construct Single Operation Trace
+                    singleOp.setAll(ts, message, deviceTwin.toJSONString());
+                    client.publish(TRACETTOPIC, singleOp.toString().getBytes(), QOS, false);
+                    properties.put("waterReady", true);
+                }catch (Exception e){
+                    LOGGER.error(e.getMessage());
+                }
                 break;
             case "pod":
-                CM.pod();
-                client.publish(RESULTTOPIC, CM.getStatus().toJSONString().getBytes(), QOS, false);
-                // Construct Single Operation Trace
-                singleOp.setAll(ts, message, deviceTwin.toJSONString());
-                client.publish(TRACETTOPIC, singleOp.toString().getBytes(), QOS, false);
-                properties.put("podReady", true);
+                try{
+                    CM.pod();
+                    client.publish(RESULTTOPIC, CM.getStatus().toJSONString().getBytes(), QOS, false);
+                    // Construct Single Operation Trace
+                    singleOp.setAll(ts, message, deviceTwin.toJSONString());
+                    client.publish(TRACETTOPIC, singleOp.toString().getBytes(), QOS, false);
+                    properties.put("podReady", true);
+                }catch (Exception e){
+                    LOGGER.error(e.getMessage());
+                }
                 break;
             case "button":
-                CM.button();
-                client.publish(RESULTTOPIC, CM.getStatus().toJSONString().getBytes(), QOS, false);
-                // Construct Single Operation Trace
-                singleOp.setAll(ts, message, deviceTwin.toJSONString());
-                client.publish(TRACETTOPIC, singleOp.toString().getBytes(), QOS, false);
+                try{
+                    CM.button();
+                    client.publish(RESULTTOPIC, CM.getStatus().toJSONString().getBytes(), QOS, false);
+                    // Construct Single Operation Trace
+                    singleOp.setAll(ts, message, deviceTwin.toJSONString());
+                    client.publish(TRACETTOPIC, singleOp.toString().getBytes(), QOS, false);
+                }catch (Exception e){
+                    LOGGER.error(e.getMessage());
+                }
                 break;
             case "status":
                 LOGGER.info(CM.getStatus().toJSONString());

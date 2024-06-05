@@ -109,6 +109,7 @@ public class Yeelight_p {
         command.addAll(Arrays.asList(args));
 
         pb.command(command.toArray(new String[0]));
+//        LOGGER.info(pb.environment());
 
         Process process = pb.start();
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));

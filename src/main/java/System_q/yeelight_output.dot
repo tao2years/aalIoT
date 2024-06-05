@@ -1,20 +1,20 @@
 digraph g {
 
-	S0 -> S4 [label="turnOn"];
-	S7 -> S7 [label="setBrightness"];
-	S2 -> S6 [label="turnOn"];
-	S5 -> S5 [label="setRGB"];
 	S6 -> S6 [label="setBrightness"];
-	S5 -> S1 [label="turnOff"];
-	S3 -> S7 [label="turnOn"];
-	S5 -> S7 [label="setBrightness"];
 	S6 -> S7 [label="setRGB"];
+	S0 -> S4 [label="turnOn"];
+	S7 -> S7 [label="setRGB"];
+	S4 -> S6 [label="setBrightness"];
+	S2 -> S6 [label="turnOn"];
+	S3 -> S7 [label="turnOn"];
+	S7 -> S7 [label="setBrightness"];
+	S1 -> S5 [label="turnOn"];
+	S5 -> S1 [label="turnOff"];
 	S4 -> S5 [label="setRGB"];
 	S6 -> S2 [label="turnOff"];
 	S7 -> S3 [label="turnOff"];
-	S7 -> S7 [label="setRGB"];
-	S4 -> S6 [label="setBrightness"];
-	S1 -> S5 [label="turnOn"];
+	S5 -> S5 [label="setRGB"];
 	S4 -> S0 [label="turnOff"];
+	S5 -> S7 [label="setBrightness"];
 
 }
